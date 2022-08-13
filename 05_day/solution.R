@@ -14,6 +14,10 @@ isVertical <-  function(line){
   line[1] == line[3]
 }
 
+isDiagonal <- function(line){
+  !isHorizontalOrVertical(line)
+}
+
 isHorizontalOrVertical <- function(line){
   isHorizontal(line) || isVertical(line)
 }
@@ -27,7 +31,10 @@ points <- function(line){
   } else if(isVertical(line)){
     ys <- line[2]:line[4]
     xs <- rep_len(line[1], length(ys))
-  }
+  } else {
+     xs <- line[1]:line[3]
+     ys <- line[2]:line[4]
+   }
   
   matrix(c(xs, ys), ncol = 2)
   
@@ -35,8 +42,9 @@ points <- function(line){
 
  
 
-points.m <- lines[apply(lines, 1, isHorizontalOrVertical), ] |>
-  apply(1, points) |>
+points.m <- 
+  #lines[apply(lines, 1, isHorizontalOrVertical), ] |>
+  apply(lines, 1, points) |>
   purrr::reduce(rbind)
   duplicated(points.m) -> dupes
 
